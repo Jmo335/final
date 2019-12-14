@@ -47,7 +47,7 @@
 		viewer.setPointBudget(1*1000*1000);
 		viewer.loadSettingsFromURL();
 		
-		viewer.setDescription("<a target='_blank' href=''>Craft Creek</a>");
+		viewer.setDescription("Point cloud courtesy of <a target='_blank' href='https://www.sigeom.ch/'>sigeom sa</a>");
 		
 		viewer.loadGUI(() => {
 
@@ -60,40 +60,7 @@
 			viewer.profileWindow.show();
 			viewer.profileWindowController.setProfile(viewer.scene.profiles[0]);
 		});
-		let sceneSG = new Potree.Scene();
-		let sceneLion = new Potree.Scene();
-		
-		viewer.setScene(sceneSG);
-		{
-			let aAbout1 = new Potree.Annotation({
-						position: [590043.63, 231490.79, 740.78],
-						title: elTitle,
-						cameraPosition: [5677477.785, 3772708.002, 1217.621],
-						cameraTarget: [590043.63, 231488.79, 740.78],
-						description: `<ul><li>Click on the annotation label to move a predefined view.</li> 
-						<li>Click on the icon to execute the specified action.</li>
-						In this case, the action will bring you to another scene and point cloud.</ul>`
-					});
 
-					sceneSG.annotations.add(aAbout1);
-				}
-				{
-					let aAbout2 = new Potree.Annotation({
-						position: [589621, 231437, 784],
-						"cameraPosition": [589585.81, 231463.63, 804.00],
-						"cameraTarget": [589625.86, 231439, 775.38],
-						"title": "About Annotations 2",
-						"description": `
-						Suitable annotation positions and views can be obtained by 
-						looking up the current camera position and target in the "Scene" panel, 
-						or by evaluating following lines in your browser's developer console:<br><br>
-						<code>viewer.scene.view.position</code><br>
-						<code>viewer.scene.view.getPivot()</code><br>
-						`
-					});
-					sceneSG.annotations.add(aAbout2);
-				}
-		
 		{ // PROFILE
 			let profile = new Potree.Profile();
 			profile.name = "Elevation Profile";
@@ -117,7 +84,6 @@
 			
 			scene.view.position.set(5678190.013331328, 3771503.5584262474, 1705.8615816028996);
 			scene.view.lookAt(new THREE.Vector3(5677912.457562813, 3772511.5681616953, 880.6783648459937));
-		
 		});
 
 	</script>

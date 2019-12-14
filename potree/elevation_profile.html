@@ -46,13 +46,11 @@
 		viewer.setFOV(60);
 		viewer.setPointBudget(1*1000*1000);
 		viewer.loadSettingsFromURL();
+		viewer.setBackground("skybox");
 		
-		viewer.setDescription("Point cloud courtesy of <a target='_blank' href='https://www.sigeom.ch/'>sigeom sa</a>");
+		viewer.setDescription("<a target='_blank' href=''>Craft Creek</a>");
 		
 		viewer.loadGUI(() => {
-
-			console.log("gui loaded task");
-
 			viewer.setLanguage('en');
 			$("#menu_tools").next().show();
 			$("#menu_scene").next().show();
@@ -60,7 +58,18 @@
 			viewer.profileWindow.show();
 			viewer.profileWindowController.setProfile(viewer.scene.profiles[0]);
 		});
-
+		let scene = new Potree.Scene();
+		viewer.setScene(scene);
+		Potree.loadPointCloud("pointclouds/index/cloud.js", "index", function(e){
+			scene.addPointCloud(e.pointcloud);
+			scene.view.position.set(5678190.013331328, 3771503.5584262474, 1705.8615816028996);
+			scene.view.lookAt(new THREE.Vector3(5677912.457562813, 3772511.5681616953, 880.6783648459937));
+		
+			let material = e.pointcloud.material;
+			material.size = 1.2;
+			material.pointSizeType = Potree.PointSizeType.ADAPTIVE;
+			material.shape = Potree.PointShape.SQUARE;
+		
 		{ // PROFILE
 			let profile = new Potree.Profile();
 			profile.name = "Elevation Profile";
@@ -71,21 +80,47 @@
 			
 			viewer.scene.addProfile(profile);
 		}
-		
-		// POINTCLOUD
-		Potree.loadPointCloud("pointclouds/index/cloud.js", "index", function(e){
-			let scene = viewer.scene;
-			scene.addPointCloud(e.pointcloud);
-			
-			let material = e.pointcloud.material;
-			material.size = 1.5;
-			material.pointSizeType = Potree.PointSizeType.ADAPTIVE;
-			material.shape = Potree.PointShape.SQUARE;
-			
-			scene.view.position.set(5678190.013331328, 3771503.5584262474, 1705.8615816028996);
-			scene.view.lookAt(new THREE.Vector3(5677912.457562813, 3772511.5681616953, 880.6783648459937));
-		});
 
+		});
+		{
+			let elTitle = $(`
+						<span>
+							About Annotations
+							<img src="${Potree.resourcePath}/icons/goto.svg" 
+								name="action_set_scene"
+								class="annotation-action-icon" 
+								style="filter: invert(1);" />
+						</span>
+					`);
+					elTitle.find("img[name=action_set_scene]").click( (event) => {
+						event.stopPropagation();
+						viewer.setScene(sceneLion); 
+					});
+					elTitle.toString = () => "About Annotations";
+
+			let aAbout1 = new Potree.Annotation({
+						position: [5678220.160, 3773066.317, 1119.357],
+						title: "Point 1 - Click to view",
+						cameraPosition: [5678133.143, 3773103.040, 1317.844],
+						cameraTarget: [5678148.841, 3773072.401, 1301.049],
+						description: `<ul><li>Click on the annotation label to move a predefined view.</li> 
+						</ul>`
+					});
+
+					scene.annotations.add(aAbout1);
+				}
+
+				{
+					let aAbout2 = new Potree.Annotation({
+						position: [5677396.958, 3772924.149, 1099.130],
+						cameraPosition: [5677459.916, 3772812.003, 1223.111],
+						cameraTarget: [5677482.736, 3772784.373, 1209.581],
+						title: "Point 2 - Click to view",
+						"description": `<ul><li>Click on the annotation label to move a predefined view.</li> 
+						</ul>`
+					});
+					scene.annotations.add(aAbout2);
+				}
 	</script>
 	
 	
